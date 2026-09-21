@@ -1,0 +1,24 @@
+name: Build AbzzModz
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - name: Download repository
+        uses: actions/checkout@v4
+
+      - name: Set up MSBuild
+        uses: microsoft/setup-msbuild@v2
+
+      - name: Build
+        shell: cmd
+        run: |
+          echo Building AbzzModz...
+          msbuild AbzzModz.sln /p:Configuration=Release /p:Platform=x64
