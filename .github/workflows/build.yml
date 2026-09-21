@@ -11,18 +11,22 @@ jobs:
     runs-on: windows-latest
 
     steps:
-      - name: Checkout
+      - name: Checkout repository
         uses: actions/checkout@v4
+
+      - name: Show project files
+        shell: powershell
+        run: |
+          Write-Host "===== REPOSITORY ====="
+          Get-ChildItem -Recurse | Select-Object FullName
 
       - name: Setup MSBuild
         uses: microsoft/setup-msbuild@v2
 
       - name: Build AbzzModz
-        run: msbuild AbzzModz.vcxproj /p:Configuration=Release /p:Platform=x64
-
-      - name: Upload build
-        uses: actions/upload-artifact@v4
-        with:
-          name: AbzzModz
-          path: |
-            x64/Release/AbzzModz.dll
+        shell: powershell
+        run: |
+          msbuild .\AbzzModz.vcxproj `
+            /p:Configuration=Release `
+            /p:Platform=x64 `
+            /verbosity:normal
